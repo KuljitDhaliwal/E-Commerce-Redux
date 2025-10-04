@@ -1,34 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
+import React from 'react'
+import Home from './Pages/Home'
+import API from './Services/API'
+import { Route, Routes } from 'react-router-dom'
+import Products from './Pages/Products'
+import { Navbar } from './Components/Navbar'
+import Footer from './Components/Footer'
+import { useSelector } from 'react-redux'
+import Wishlist from './Pages/Wishlist'
+import Cart from './Pages/Cart'
+import Product from './Pages/Product'
 function App() {
-  const [count, setCount] = useState(0)
-
+  const searchedData = useSelector((state)=> state.products.allProducts)
+  console.log('searchedData', searchedData)
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div>
+      <API/>
+      <Navbar/>
+      <Cart/>
+        <Routes>
+          <Route path='/' element={<Home/>}/>
+          <Route path='/products' element={<Products/>}/>
+          <Route path='/wishlist' element={<Wishlist/>}/>
+          <Route path=':sku' element={<Product/>}/>
+        </Routes>
+      <Footer/>
+    </div>
+    
   )
 }
 
