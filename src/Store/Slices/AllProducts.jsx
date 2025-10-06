@@ -9,7 +9,8 @@ const storeData ={
     wishlist: [],
     cart: [],
     cartToggle: false,
-    product: ''
+    product: '',
+    quantity: 1
 }
 const AllProductsSlice = createSlice({
     name: "AllProducts",
@@ -75,10 +76,26 @@ const AllProductsSlice = createSlice({
             state.cart = state.cart.filter(item => item !== action.payload)
         },
         cartToggle: (state, action) => {state.cartToggle = action.payload},
-        product: (state, action) => {state.product = action.payload}
-}
+        product: (state, action) => {state.product = action.payload},
+        handleIncrement: (state) => {state.quantity += 1},
+        handleDecrement: (state) => {state.quantity -= 1},
+        addToCartWithQuantity: (state, action) =>{
+            let exist = state.cart.find(item => item === action.payload)
+            if(exist){
+                state.cart.map((item)=>{
+                    if(item === exist){
+                        return {...item, quantity: item.quantity + 1}
+                    }else{
+                        return item
+                    }
+                })
+            }else{
+                state.cart.push(action.payload)
+            }
+        }
+    }
 })
 
 export const selectWoodTypes = (state) => state.products.allProducts?.data?.map((item)=> item.wood_type)
-export const {setAllProducts, getWood, getPrice, clearAll, searchProduct, addWishlist, addCart, removeCart, cartToggle, product} = AllProductsSlice.actions
+export const {setAllProducts, getWood, getPrice, clearAll, searchProduct, addWishlist, addCart, removeCart, cartToggle, product, handleIncrement, handleDecrement} = AllProductsSlice.actions
 export default AllProductsSlice.reducer
